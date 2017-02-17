@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170214131738) do
+ActiveRecord::Schema.define(version: 20170217152910) do
+
+  create_table "members", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "official_id",                            null: false
+    t.string   "name",                                   null: false
+    t.text     "address",      limit: 65535,             null: false
+    t.string   "birthplace",                             null: false
+    t.date     "birthdate",                              null: false
+    t.string   "phone_number",                           null: false
+    t.integer  "status",                     default: 0, null: false
+    t.integer  "gender",                     default: 0, null: false
+    t.string   "info"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.index ["official_id"], name: "index_members_on_official_id", using: :btree
+  end
 
   create_table "officials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "username",                             default: "", null: false
@@ -28,7 +43,7 @@ ActiveRecord::Schema.define(version: 20170214131738) do
     t.text     "address",                limit: 65535,              null: false
     t.string   "birthplace",                                        null: false
     t.date     "birthdate",                                         null: false
-    t.string   "phone_number",                                       null: false
+    t.string   "phone_number",                                      null: false
     t.string   "info"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
