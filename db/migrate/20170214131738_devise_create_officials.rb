@@ -32,12 +32,12 @@ class DeviseCreateOfficials < ActiveRecord::Migration[5.0]
       # column.datetime :locked_at
 
       ## Profile
-      column.string :name,            null: false
-      column.text   :address,        null: false
-      column.string :birthplace,      null: false
-      column.date   :birthdate,       null: false
-      column.string :phone_number,    null: false
-      column.string :info,            null: true
+      column.string :name,         null: false
+      column.text   :address,      null: false
+      column.string :birthplace,   null: false
+      column.date   :birthdate,    null: false
+      column.string :phone_number, null: false
+      column.string :info,         null: true
 
       column.timestamps null: false
     end
