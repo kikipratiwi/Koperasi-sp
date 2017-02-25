@@ -1,4 +1,5 @@
 class Official < ApplicationRecord
+  has_many :members
   attr_accessor :login
   
   # Include default devise modules. Others available are:
