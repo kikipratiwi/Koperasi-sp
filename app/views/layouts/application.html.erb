@@ -9,14 +9,14 @@
   </head>
 
   <body>
- <%= nav_bar fixed: :top, brand: "Koperasi Nonna", responsive: true do %>
+ <%= nav_bar fixed: :left, brand: "Koperasi Nonna", responsive: true do %>
     <%= menu_group do %>
         <%= menu_item "Home", root_path %>
         <%= menu_divider %>
         <%= drop_down "Konfigurasi" do %>
             <%= menu_item "Bunga", interests_path %>
-            <%= menu_item "Things that won't suit you anyway", members_path %>
-            <%= menu_item "Things you're not even cool enough to buy anyway", members_path %>
+            <%= menu_item "Simpanan", savings_path %>
+            <%= menu_item "Pinjaman", loan_types_path %>
         <% end %>
         <%= menu_item "Anggota", members_path %>
     <% end %>

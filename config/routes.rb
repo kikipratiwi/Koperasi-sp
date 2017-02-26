@@ -1,14 +1,26 @@
 Rails.application.routes.draw do
+  root "pages#home"
+  get 'pages/home'
+
   devise_for :officials, controllers: {
     sessions: 'officials/sessions',
     registrations: 'officials/registrations'
   }
 
-  root "members#index"
-
+  resources :loan_types
   resources :interests
+  resources :savings
+
   resources :members do
-  	resources :deposits
+    member do
+      get :pay_principal_savings
+    end
+    resources :deposits
+    resources :loans do
+      collection do
+        get :calculate_payment  
+      end
+    end
   end
 
 

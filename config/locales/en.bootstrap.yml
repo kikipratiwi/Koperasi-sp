@@ -12,6 +12,7 @@ en:
     links:
       back: "Back"
       cancel: "Cancel"
+      calculate: "Calculate"
       confirm: "Are you sure?"
       destroy: "Delete"
       new: "New"

@@ -1,3 +1,3 @@
 class LoanType < ApplicationRecord
-  has_many :loans
+	has_many :loans
 end

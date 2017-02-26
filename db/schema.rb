@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170221134949) do
+ActiveRecord::Schema.define(version: 20170226072318) do
 
   create_table "deposit_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "name",       default: 0, null: false
@@ -19,40 +19,39 @@ ActiveRecord::Schema.define(version: 20170221134949) do
   end
 
   create_table "deposits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "deposit_category_id",                         null: false
-    t.integer  "member_id",                                   null: false
-    t.decimal  "amount",              precision: 8, scale: 2, null: false
+    t.integer  "deposit_category_id", null: false
+    t.integer  "member_id",           null: false
+    t.integer  "amount",              null: false
     t.string   "info"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.index ["deposit_category_id"], name: "index_deposits_on_deposit_category_id", using: :btree
     t.index ["member_id"], name: "index_deposits_on_member_id", using: :btree
   end
 
   create_table "interests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "type",                   null: false
+    t.string   "type_name",              null: false
     t.integer  "rate",       default: 1, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
 
   create_table "loan_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "name",       default: 0, null: false
-    t.integer  "term",       default: 0, null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "name",       default: "", null: false
+    t.integer  "term",       default: 0,  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "loans", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "loan_type_id",                                     null: false
-    t.integer  "member_id",                                        null: false
-    t.decimal  "amount",       precision: 8, scale: 2,             null: false
-    t.datetime "accorded_at",                                      null: false
-    t.datetime "loan_at",                                          null: false
-    t.date     "paid_off_at",                                      null: false
-    t.integer  "info",                                 default: 0, null: false
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.integer  "loan_type_id",             null: false
+    t.integer  "member_id",                null: false
+    t.integer  "amount",                   null: false
+    t.datetime "accorded_at",              null: false
+    t.date     "paid_off_at",              null: false
+    t.integer  "info",         default: 0, null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.index ["loan_type_id"], name: "index_loans_on_loan_type_id", using: :btree
     t.index ["member_id"], name: "index_loans_on_member_id", using: :btree
   end
@@ -98,22 +97,30 @@ ActiveRecord::Schema.define(version: 20170221134949) do
   end
 
   create_table "payment_schedules", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "payment_id",                         null: false
-    t.decimal  "amount",     precision: 8, scale: 2, null: false
-    t.string   "sequence",                           null: false
+    t.integer  "payment_id", null: false
+    t.integer  "amount",     null: false
+    t.integer  "interest",   null: false
+    t.string   "sequence",   null: false
     t.string   "info"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["payment_id"], name: "index_payment_schedules_on_payment_id", using: :btree
   end
 
   create_table "payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "loan_id",                            null: false
-    t.decimal  "total",      precision: 8, scale: 2, null: false
-    t.string   "due_date",                           null: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.integer  "loan_id",    null: false
+    t.integer  "total",      null: false
+    t.string   "due_date",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["loan_id"], name: "index_payments_on_loan_id", using: :btree
+  end
+
+  create_table "savings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "saving",     null: false
+    t.integer  "amount",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

@@ -1,0 +1,26 @@
+<table class='table table-striped'>
+  <thead>
+    <tr>
+      <th> No </th>
+      <th> Pokok </th>
+      <th> Bunga </th>
+      <th> Pembayaran </th>
+    </tr>        
+  </thead>
+  <tbody>
+    <% (@term || 0).to_i.times do |inc| %>
+      <tr>
+        <td><%= inc + 1 %></td>
+        <td><%= to_rp(@principal) %></td>
+        <td><%= to_rp(@interest_amount) %></td>
+        <td><%= to_rp(@total) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3">Total</td>
+      <td><%= to_rp((@total || 0) * 12) %></td>
+    </tr>
+  </tfoot>
+</table>

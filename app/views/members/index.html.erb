@@ -7,24 +7,31 @@
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:name) %></th>
-      <th><%= model_class.human_attribute_name(:address) %></th>
-      <th><%= model_class.human_attribute_name(:phone_number) %></th>
-      <th><%= model_class.human_attribute_name(:gender) %></th>
       <th><%= model_class.human_attribute_name(:status) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:bergabung) %></th>
+      <th><%=t '.actions', :default => t("helpers.menu") %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @members.each do |member| %>
       <tr>
-        <td><%= link_to member.id, member_path(member) %></td>
+        <td><%= member.created_at.strftime("%I%M-").to_s + member.id.to_s %></td>
         <td><%= member.name %></td>
-        <td><%= member.address %></td>
-        <td><%= member.phone_number %></td>
-        <td><%= member.gender %></td>
         <td><%= member.status %></td>
-        <td><%=l member.created_at %></td>
+        <td><%= member.created_at.strftime("%d %b %Y %I:%M%p") %></td>
+        <td>
+          <% unless member.active_status? %>
+            <%= link_to t('.edit', :default => t("helpers.links.bayar_simpanan_pokok")),
+                        pay_principal_savings_member_path(member), :class => 'btn btn-default btn-xs',
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
+          <% else %>
+            <%= link_to t('.show', :default => t("helpers.links.simpanan")),
+                        member_deposits_path(member_id: member), :class => 'btn btn-default btn-xs' %>
+            <%= link_to t('.show', :default => t("helpers.links.pinjaman")),
+                        member_loans_path(member_id: member), :class => 'btn btn-default btn-xs' %>
+          <% end %>
+        </td>
         <td>
           <%= link_to t('.show', :default => t("helpers.links.show")),
                       member_path(member), :class => 'btn btn-default btn-xs' %>
@@ -35,7 +42,7 @@
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
-        </td>
+        </td>        
       </tr>
     <% end %>
   </tbody>

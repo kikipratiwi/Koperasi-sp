@@ -1,0 +1,78 @@
+<%= form_for @loan, url: member_loans_path(params[:member_id]), :html => { :class => "form-horizontal loan" } do |f| %>
+
+  <% if @loan.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@loan.errors.count, "error") %> prohibited this loan from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @loan.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+  <div class='row'>
+    <div class='col-lg-6'>
+      <div class="form-group">
+        <%= f.label :amount, :class => 'control-label col-lg-2' %>
+        <div class="col-lg-10">
+          <%= f.text_field :amount, :class => 'form-control' %>
+        </div>
+        <%=f.error_span(:amount) %>
+      </div>
+      <div class="form-group">
+        <%= f.label :loan_type_id, :class => 'control-label col-lg-2' %>
+        <div class="col-lg-10">
+          <%= f.select :loan_type_id, @type_collection, {include_blank: "Pilih Kategori Pinjaman (dalam bulan)"}, :class => 'form-control'%>
+        </div>
+        <%=f.error_span(:loan_type_id) %>
+      </div>
+      <div class="form-group">
+        <label class='control-label col-lg-2'>Interest Rate</label>
+        <div class="col-lg-10">
+          <div id="interest_rate" class='form-control-static'> <%= @interest %> </div>
+        </div>
+        <%=f.error_span(:info) %>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+          <span id="submit"></span>
+          <%= link_to t('.calculate', :default => t("helpers.links.calculate")), 'javascript:void(0);', :class => 'btn btn-info', id: 'js_btn_calculate' %>        
+          <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                    member_loans_path(params[:member_id]), :class => 'btn btn-danger' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6" id='table_payment_schedules_area'>
+      <%= render partial: 'table_payment_schedules' %>
+    </div>
+  </div>
+
+<% end %>
+
+<%= javascript_tag do %>
+  $('#js_btn_calculate').click(function() {
+    var data, url_parameters;
+
+    data = {
+      loan_type_id: $('#loan_loan_type_id').val(), 
+      amount: $('#loan_amount').val()
+    }
+
+    url_parameters = {
+      member_id: "<%= params[:member_id] %>", 
+      format: 'js'
+    }
+
+    $.ajax({
+      url: Routes.calculate_payment_member_loans_path(url_parameters),
+      method: 'get',
+      data: data
+    });
+  });
+<% end %>

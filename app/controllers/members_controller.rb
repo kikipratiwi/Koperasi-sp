@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
   before_action :authenticate_official!
-  before_action :set_member, only: [:show, :edit, :update, :destroy]
+  before_action :set_member, only: [:pay_principal_savings, :show, :edit, :update, :destroy]
 
   # GET /members
   # GET /members.json
@@ -60,6 +60,22 @@ class MembersController < ApplicationController
       format.html { redirect_to members_url, notice: 'Member was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def pay_principal_savings
+    amount =  Saving.principal_saving_amount
+    @deposit = @member.deposits.new(deposit_category_id: 2, amount: amount)
+    respond_to do |format|
+      # binding.pry
+      if @deposit.save
+        @member.update_attribute(:status, 1)  
+        format.html { redirect_to @member, notice: 'Simpanan Pokok berhasil disimpan successfully.' }
+        format.json { render :show, status: :saved, location: @member }
+      else
+        format.html { redirect_to @member, notice: "invalid!" }
+        format.json { render json: @member.errors, status: :unprocessable_entity }
+      end
+    end     
   end
 
   private

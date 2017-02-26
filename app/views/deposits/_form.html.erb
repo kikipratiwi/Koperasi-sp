@@ -1,4 +1,4 @@
-<%= form_for @form, url: member_deposits_path(@member.id), :html => { :class => "form-horizontal deposit" } do |f| %>
+<%= form_for @deposit, url: member_deposits_path(params[:member_id]), :html => { :class => "form-horizontal deposit" } do |f| %>
 
   <% if @deposit.errors.any? %>
     <div id="error_expl" class="panel panel-danger">
@@ -18,14 +18,14 @@
   <div class="form-group">
     <%= f.label :deposit_category_id, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :deposit_category_id, :class => 'form-control' %>
+      <%= f.select :deposit_category_id, @category_collection, {include_blank: "Pilih Kategori Simpanan"}, :class => 'form-control', id: "deposit_category_js"%>
     </div>
     <%=f.error_span(:deposit_category_id) %>
   </div>
   <div class="form-group">
     <%= f.label :amount, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :amount, :class => 'form-control' %>
+      <%= f.text_field :amount, :class => 'form-control', id: "amount_js" %>
     </div>
     <%=f.error_span(:amount) %>
   </div>
@@ -45,4 +45,16 @@
     </div>
   </div>
 
+<% end %>
+
+<%= javascript_tag do %>
+  $('#deposit_category_js').change(function() {
+    if(this.value == "1") {
+      $('#amount_js').val("<%= @compulsory_saving_amount %>");      
+      $('#amount_js').prop('disabled', true);
+    }else{
+      $('#amount_js').val('');
+      $('#amount_js').prop('disabled', false);
+    }
+  });
 <% end %>
