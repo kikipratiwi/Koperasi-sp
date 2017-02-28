@@ -28,7 +28,7 @@
     <% end %>
     <%= menu_group pull: :right do %>
         <% if current_official %>
-            <%= menu_item "Profile", edit_official_registration_path %>
+            <%= menu_item "Edit Profile", edit_official_registration_path %>
             <%= menu_item "Log Out", destroy_official_session_path, method: :delete %>
         <% else %>
 
@@ -38,7 +38,7 @@
   <div class="container">
     <div class="row">
       <div class="span3">
-		<%= yield %>
+    		<%= yield %>
       </div>
     </div>
   </div>
