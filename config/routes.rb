@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   root "pages#home"
   get 'pages/home'
 
@@ -20,9 +21,14 @@ Rails.application.routes.draw do
       collection do
         get :calculate_payment  
       end
+      member do
+        get :approvment
+        post :payment
+      end
     end
   end
 
+  get 'reports/member', as: 'member_report' 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

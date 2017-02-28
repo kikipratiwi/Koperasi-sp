@@ -8,12 +8,14 @@
   <dd><%= @deposit.deposit_category.name.titleize %></dd>
   <dt><strong><%= model_class.human_attribute_name(:besar) %>:</strong></dt>
   <dd><%= @deposit.amount %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:tanggal) %>:</strong></dt>
+  <dd><%= to_datetime(@deposit.created_at) %></dd> 
   <dt><strong><%= model_class.human_attribute_name(:info) %>:</strong></dt>
   <dd><%= @deposit.info %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
-              member_deposits_path(@deposit.member_id, @deposit), :class => 'btn btn-default'  %>
+              member_deposits_path(@deposit.member_id), :class => 'btn btn-default'  %>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_member_deposit_path(@deposit.member_id, @deposit), :class => 'btn btn-default' %>
 <%= link_to t('.destroy', :default => t("helpers.links.destroy")),

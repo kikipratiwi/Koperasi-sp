@@ -1,0 +1,37 @@
+<table class='table table-striped'>
+  <thead>
+    <tr>
+      <th> No </th>
+      <th> Jatuh Tempo </th>
+      <th> Tgl Bayar </th>
+      <th> Pokok </th>
+      <th> Bunga </th>
+      <th> Pembayaran </th>
+      <th>  </th>
+    </tr>        
+  </thead>
+  <tbody>
+    <% @payment_schedules.each do |payment_schedule| %>
+      <tr>
+        <td><%= payment_schedule.sequence %></td>
+        <td><%= to_date(payment_schedule.due_date) if payment_schedule.due_date.present?%></td>
+        <td><%= to_datetime(payment_schedule.updated_at) if payment_schedule.updated_at.present? and payment_schedule.paid_status? %></td>
+        <td><%= to_rp(payment_schedule.amount) %></td>
+        <td><%= to_rp(payment_schedule.interest) %></td>
+        <td><%= to_rp(payment_schedule.amount + payment_schedule.interest) %></td>
+        <td>
+          <% if payment_schedule.paid_status? %>
+            <span>PAID</span>        
+          <% end %>          
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="5">Total</td>
+      <td><%= to_rp(@payment_schedules.map(&:amount).sum + @payment_schedules.map(&:interest).sum) %></td>
+      <td></td>
+    </tr>
+  </tfoot>
+</table>

@@ -1,5 +1,5 @@
 class Loan < ApplicationRecord
-  enum info: [:waiting, :on_going, :paid_in_full], _suffix: true
+  enum status: [:waiting, :on_going, :paid_in_full], _suffix: true
 
   belongs_to :member
   belongs_to :loan_type

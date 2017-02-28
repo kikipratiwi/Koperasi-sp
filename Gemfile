@@ -35,13 +35,17 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# User twitter-bootstrap for view
+# Use twitter-bootstrap for view
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 # Use devise fot Authentication
 gem 'devise'
 
-#Use js-routes for rails helper path in javascript 
+# Use js-routes for rails helper path in javascript 
 gem 'js-routes'
+
+# Use wicked_pdfhtml for report
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary-edge'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

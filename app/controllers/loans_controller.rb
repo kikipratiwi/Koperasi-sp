@@ -1,6 +1,6 @@
 class LoansController < ApplicationController
   before_action :authenticate_official!, :set_member, :member_active?, :set_type_collection, :set_interest
-  before_action :set_loan, only: [:show, :edit, :update, :destroy]
+  before_action :set_loan, only: [:show, :edit, :update, :destroy, :approvment, :payment]
 
   # GET /loans
   # GET /loans.json
@@ -11,15 +11,21 @@ class LoansController < ApplicationController
   # GET /loans/1
   # GET /loans/1.json
   def show
+    # set_field_for_payment_schedule_table
+    set_payment
+    set_payment_schedules
   end
 
   # GET /loans/new
   def new
     @loan = set_member.loans.new
+    @url = member_loans_path(params[:member_id])    
   end
 
   # GET /loans/1/edit
   def edit
+    @loan = set_loan
+    @url = member_loan_path(params[:member_id], @loan)        
   end
 
   # POST /loans
@@ -30,7 +36,7 @@ class LoansController < ApplicationController
     respond_to do |format|
       if @loan.save
         @loan.set_payment!
-        format.html { redirect_to @loan, notice: 'Loan was successfully created.' }
+        format.html { redirect_to member_loan_path(@member, @loan), notice: 'Loan was successfully created.' }
         format.json { render :show, status: :created, location: @loan }
       else
         format.html { render :new }
@@ -44,7 +50,7 @@ class LoansController < ApplicationController
   def update
     respond_to do |format|
       if @loan.update(loan_params)
-        format.html { redirect_to member_loans_path(@member, @loan), notice: 'Loan was successfully updated.' }
+        format.html { redirect_to member_loan_path(@member, @loan), notice: 'Loan was successfully updated.' }
         format.json { render :show, status: :ok, location: @loan }
       else
         format.html { render :edit }
@@ -58,7 +64,7 @@ class LoansController < ApplicationController
   def destroy
     @loan.destroy
     respond_to do |format|
-      format.html { redirect_to loans_url, notice: 'Loan was successfully destroyed.' }
+      format.html { redirect_to member_loans_path(@member), notice: 'Loan was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -72,12 +78,69 @@ class LoansController < ApplicationController
     @total            = (@principal + @interest_amount).to_f.round(2)
   end
 
+  def approvment
+    @loan.update_attributes(accorded_at: DateTime.now, status: 1)
+    @loan.payment.update_attribute(:due_date, DateTime.now.day)
+    @loan.payment.payment_schedules.each_with_index do |payment_schedule, inc|
+      payment_schedule.update_attribute(:due_date, (DateTime.now + inc.month))
+    end
+    respond_to do |format|
+      format.html { redirect_to member_loan_path(@member.id, @loan), notice: 'Loan was approved.' }
+      format.json { head :no_content }
+    end    
+  end
+
+  def payment
+    # payment_schedule = @loan.payment.payment_schedules.find(params[:payment_schedule_id])
+    # payment_schedule.update_attribute(:status, 1)
+    payment_schedules = @loan.payment.payment_schedules.where(status: 0).limit(params[:total_month_to_pay])
+  # binding.pry
+    respond_to do |format|
+      if payment_schedules.size != (params[:total_month_to_pay]).to_i
+        format.html { redirect_to member_loan_path(@member, @loan), notice: 'Jumlah bulan tidak sesuai' }
+      else
+        @loan.update_attributes(paid_off_at: DateTime.now, status: 2) if payment_schedules.map(&:sequence).include?(@loan.payment.payment_schedules.maximum("sequence"))
+        payment_schedules.update_all(status: 1, updated_at: DateTime.now)
+
+        format.html { redirect_to member_loan_path(@member.id, @loan), notice: 'Loan was paid.' }
+        format.json { head :no_content }
+      end
+    end 
+
+    # if payment_schedules.size < params[:total_month_to_pay].to_i
+    #   format.html { redirect_to member_loan_path(@member, @loan), notice: 'Jumlah bulan terlalu besar' }
+    # else
+    #   respond_to do |format|
+    #     format.html { redirect_to member_loan_path(@member.id, @loan), notice: 'Loan was paid.' }
+    #     format.json { head :no_content }
+    #   end     
+    # end
+    
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def member_active?
       unless @member.active_status?
         redirect_to member_path(@member)
       end
+    end
+
+    def set_field_for_payment_schedule_table
+      amount = @loan.amount.to_f
+      @term   = @loan.loan_type.term.to_f
+      set_interest 
+      @principal        = (amount / @term).to_f.round(2)
+      @interest_amount  = ((amount * ((@interest * @term)/100)) / @term).to_f
+      @total            = (@principal + @interest_amount).to_f.round(2)
+    end
+
+    def set_payment_schedules
+      @payment_schedules = @payment.payment_schedules
+    end
+
+    def set_payment
+      @payment = @loan.payment
     end
 
     def set_interest
@@ -89,7 +152,7 @@ class LoansController < ApplicationController
     end
 
     def set_loan
-      @loan = Loan.find(params[:id])
+      @loan = set_member.loans.find(params[:id])
     end
 
     def set_member

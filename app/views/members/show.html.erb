@@ -1,27 +1,25 @@
 <%- model_class = Member -%>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
-  <%= 
-    link_to t('.show', :default => t("helpers.links.cetak_kartu")),
-              member_deposits_path(member_id: @member), :class => 'btn btn-default btn-xs'  
-    unless @member.active_status?
-      link_to t('.edit', :default => t("helpers.links.bayar_simpanan_pokok")),
-                pay_principal_savings_member_path(@member), :class => 'btn btn-default',
-                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }
-    else
-      link_to t('.show', :default => t("helpers.links.simpanan")),
-                member_deposits_path(member_id: @member), :class => 'btn btn-default btn-xs'
-      link_to t('.show', :default => t("helpers.links.pinjaman")),
-                member_loans_path(member_id: @member), :class => 'btn btn-default btn-xs'
-    end
-  %>
+  <%= link_to t('.show', :default => t("helpers.links.cetak_kartu")),
+              member_deposits_path(member_id: @member), :class => 'btn btn-default btn-xs'  %>
+  <% unless @member.active_status? %>
+    <%= link_to t('.edit', :default => t("helpers.links.bayar_simpanan_pokok")),
+                pay_principal_savings_member_path(@member), :class => 'btn btn-default btn-xs',
+                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
+  <% else %>
+    <%= link_to t('.show', :default => t("helpers.links.simpanan")),
+                member_deposits_path(@member), :class => 'btn btn-default btn-xs' %>
+    <%= link_to t('.show', :default => t("helpers.links.pinjaman")),
+                member_loans_path(@member), :class => 'btn btn-default btn-xs' %>
+  <% end %>
 </div>
 
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:official_id) %>:</strong></dt>
   <dd><%= @member.official_id %></dd>
   <dt><strong><%= model_class.human_attribute_name(:id) %>:</strong></dt>
-  <dd><%= @member.created_at.strftime("%I%M-").to_s + @member.id.to_s %></dd>
+  <dd><%= member_id_format(@member.created_at, @member.id) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
   <dd><%= @member.name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:address) %>:</strong></dt>

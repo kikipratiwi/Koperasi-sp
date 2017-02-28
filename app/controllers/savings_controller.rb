@@ -1,4 +1,5 @@
 class SavingsController < ApplicationController
+  before_action :authenticate_official!
   before_action :set_saving, only: [:show, :edit, :update, :destroy]
 
   # GET /savings

@@ -1,0 +1,26 @@
+<%- model_class = Member -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:status) %></th>
+      <th><%= model_class.human_attribute_name(:bergabung) %></th>
+      <th><%=t '.actions', :default => t("helpers.menu") %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @members.each do |member| %>
+      <tr>
+        <td><%= member_id_format(member.created_at, member.id) %></td>
+        <td><%= member.name %></td>
+        <td><%= member.status %></td>
+        <td><%= to_datetime(member.created_at) %></td>       
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,37 +1,45 @@
 <%- model_class = Loan -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+  <h1>Pinjaman : <%= link_to member_id_format(@member.created_at, @member.id), member_path(@member)  %></h1>
+  <%= 
+    link_to t('.show', :default => t("helpers.links.cetak_laporan")),
+              member_loan_path(@loans.first.member_id, @loans.first), :class => 'btn btn-default'
+  %> 
 </div>
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:loan_type_id) %></th>
-      <th><%= model_class.human_attribute_name(:member_id) %></th>
-      <th><%= model_class.human_attribute_name(:amount) %></th>
-      <th><%= model_class.human_attribute_name(:accorded_at) %></th>
-      <th><%= model_class.human_attribute_name(:paid_off_at) %></th>
-      <th><%= model_class.human_attribute_name(:info) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:no) %></th>
+      <th><%= model_class.human_attribute_name(:tipe) %></th>
+      <th><%= model_class.human_attribute_name(:besar) %></th>
+      <th><%= model_class.human_attribute_name(:pengajuan) %></th>
+      <th><%= model_class.human_attribute_name(:jatuh_tempo) %></th>
+      <th><%= model_class.human_attribute_name(:tgl_ACC) %></th>
+      <th><%= model_class.human_attribute_name(:tgl_pelunasan) %></th>
+      <th><%= model_class.human_attribute_name(:status) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
-    <% @loans.each do |loan| %>
+    <% @loans.each_with_index do |loan, inc| %>
       <tr>
-        <td><%= loan.id %></td>
-        <td><%= loan.loan_type_id %></td>
-        <td><%= loan.member_id %></td>
-        <td><%= loan.amount %></td>
-        <td><%= loan.accorded_at %></td>
-        <td><%= loan.paid_off_at %></td>
-        <td><%= loan.info %></td>
-        <td><%=l loan.created_at %></td>
+        <td><%= inc + 1 %></td>
+        <td><%= loan.loan_type.name %></td>
+        <td><%= to_rp(loan.amount) %></td>
+        <td><%= to_datetime(loan.created_at) %></td>
+        <td><%= to_datetime(loan.payment.due_date) if loan.payment.due_date.present? %></td>
+        <td><%= to_datetime(loan.accorded_at) if loan.accorded_at.present? %></td>
+        <td><%= to_datetime(loan.paid_off_at) if loan.paid_off_at.present? %></td>
+        <td><%= loan.status %></td>
         <td>
+          <% if loan.waiting_status? %>
+            <%= link_to t('.info', :default => t("helpers.links.ACC")),
+                        approvment_member_loan_path(@member.id, loan),
+                        data: { confirm: "Disetujui pada tanggal #{DateTime.now.strftime("%d %b %Y")} dan jatuh tempo setiap tanggal #{DateTime.now.day} ?" },
+                        :class => 'btn btn-xs btn-success' %>      
+          <% end %>
           <%= link_to t('.show', :default => t("helpers.links.show")),
                       member_loan_path(@member.id, loan), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_member_loan_path(@member.id, loan), :class => 'btn btn-default btn-xs' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       member_loan_path(@member.id, loan),
                       :method => :delete,

@@ -1,4 +1,5 @@
 class LoanTypesController < ApplicationController
+  before_action :authenticate_official!
   before_action :set_loan_type, only: [:show, :edit, :update, :destroy]
 
   # GET /loan_types

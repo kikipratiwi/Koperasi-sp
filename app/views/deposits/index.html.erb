@@ -1,6 +1,6 @@
 <%- model_class = Deposit -%>
 <div class="page-header">
-  <h1><%= @member.created_at.strftime("Simpanan : %I%M-").to_s + @member.id.to_s %></h1>
+  <h1>Simpanan : <%= link_to member_id_format(@member.created_at, @member.id), member_path(@member)  %></h1>
   <%= 
     link_to t('.show', :default => t("helpers.links.cetak_laporan")),
               member_deposit_path(@deposits.first.member_id, @deposits.first), :class => 'btn btn-default'
@@ -24,7 +24,7 @@
         <td><%= deposit.deposit_category.name.titleize %></td>
         <td><%= deposit.amount %></td>
         <td><%= deposit.info %></td>
-        <td><%= deposit.created_at.strftime("%d %b %Y %I:%M%p") %></td>
+        <td><%= to_datetime(deposit.created_at) %></td>
         <td>
           <%= link_to t('.show', :default => t("helpers.links.show")),
                       member_deposit_path(deposit.member_id, deposit), :class => 'btn btn-default btn-xs' %> 

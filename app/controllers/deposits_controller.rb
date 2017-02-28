@@ -16,10 +16,13 @@ class DepositsController < ApplicationController
   # GET /deposits/new
   def new
     @deposit = set_member.deposits.new
+    @url = member_deposits_path(params[:member_id])    
   end
 
   # GET /deposits/1/edit
   def edit
+    @deposit = set_deposit
+    @url = member_deposit_path(params[:member_id], @deposit)
   end
 
   # POST /deposits
@@ -43,7 +46,7 @@ class DepositsController < ApplicationController
   def update
     respond_to do |format|
       if @deposit.update(deposit_params)
-        format.html { redirect_to redirect_to member_deposit_path(@member, @deposit), notice: 'Deposit was successfully updated.' }
+        format.html { redirect_to member_deposit_path(@member, @deposit), notice: 'Deposit was successfully updated.' }
         format.json { render :show, status: :ok, location: @deposit }
       else
         format.html { render :edit }
@@ -57,7 +60,7 @@ class DepositsController < ApplicationController
   def destroy
     @deposit.destroy
     respond_to do |format|
-      format.html { redirect_to redirect_to member_deposit_path(@member, @deposit), notice: 'Deposit was successfully destroyed.' }
+      format.html { redirect_to member_deposits_path(@member), notice: 'Deposit was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -79,7 +82,7 @@ class DepositsController < ApplicationController
     end
 
     def set_deposit
-      @deposit = Member.find(params[:member_id]).deposits.find(params[:id])
+      @deposit = set_member.deposits.find(params[:id])
     end
 
     def set_member
