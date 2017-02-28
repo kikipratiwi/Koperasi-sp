@@ -1,0 +1,33 @@
+<%- model_class = Member -%>
+<div class='row'>
+  <div class='col-lg-6'>
+    <div class="page-header">
+      <h1><%= 'Report Anggota'.titleize %></h1>
+    </div>
+    <h5><%= "Reported at : #{to_datetime(DateTime.now)}" %></h1>
+  </div>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:bergabung) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:alamat) %></th>
+      <th><%= model_class.human_attribute_name(:status) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @members.each_with_index do |member, inc| %>
+      <tr>
+        <td><%= inc += 1 %></td>
+        <td><%= member_id_format(member.created_at, member.id) %></td>
+        <td><%= to_datetime(member.created_at) %></td>       
+        <td><%= member.name %></td>
+        <td><%= member.address %></td>
+        <td><%= member.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
