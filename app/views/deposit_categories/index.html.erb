@@ -1,0 +1,44 @@
+<%- model_class = DepositCategory -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped" id="data-table">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @deposit_categories.each do |deposit_category| %>
+      <tr>
+        <td><%= link_to deposit_category.id, deposit_category_path(deposit_category) %></td>
+        <td><%= deposit_category.name %></td>
+        <td><%=l deposit_category.created_at %></td>
+        <td>
+          <%= link_to t('.show', :default => t("helpers.links.show")),
+                      deposit_category_path(deposit_category), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_deposit_category_path(deposit_category), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      deposit_category_path(deposit_category),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_deposit_category_path,
+            :class => 'btn btn-primary' %>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+      $('#data-table').DataTable();
+  });
+<% end %>

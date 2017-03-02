@@ -22,7 +22,12 @@
       <dt><strong><%= model_class.human_attribute_name(:info) %>:</strong></dt>
       <dd><%= @loan.info %></dd>
     </dl>  
-
+    <% if @loan.waiting_status? %>
+      <%= link_to t('.info', :default => t("helpers.links.ACC")),
+                  approvment_member_loan_path(@member.id, @loan),
+                  data: { confirm: "Accorded at #{DateTime.now.strftime("%d %b %Y")} and due date every #{DateTime.now.day}th of month" },
+                  :class => 'btn btn-success' %>      
+    <% end %>
     <%= link_to t('.back', :default => t("helpers.links.back")),
                   member_loans_path(@loan.member_id), :class => 'btn btn-default'  %>
     <%= link_to t('.edit', :default => t("helpers.links.edit")),
@@ -33,31 +38,31 @@
                   :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                   :class => 'btn btn-danger' %>
   </div>
-  
-  <div class="col-lg-6" id='table_payment_schedules_area'>
-    <div class="page-header">
-      <h2>Payment Schedule</h2>
+   <form class="form-horizontal"> 
+    <div class="col-lg-6" id='table_payment_schedules_area'>
+      <div class="page-header">
+        <h2>Payment Schedule</h2>
+      </div>
+      <% if @loan.on_going_status? %>
+        <%= form_tag payment_member_loan_path(@loan.member_id, @loan) do %>
+          <div class='row'>
+            <div class="form-group">
+              <%= label_tag :total_month_to_pay, 'Pay for', class: 'control-label col-lg-2' %>
+              <div class="col-lg-5">
+                <%= text_field_tag :total_month_to_pay, '', class: 'form-control' %>
+              </div>
+              <div class="col-lg-5">
+                <%= submit_tag 'Pay', data: { confirm: "Are you sure?" }, :class => 'btn btn-info'  %>
+              </div>
+            </div> 
+          </div>  
+        <% end %>
+      <% end %> 
+      <div class='row'>         
+        <%= render partial: 'payment' %>
+      </div>  
     </div>
-    <% if @loan.on_going_status? %>
-      <%= form_tag payment_member_loan_path(@loan.member_id, @loan) do %>
-        <div class='row'>
-          <div class="form-group">
-            <%= label_tag :total_month_to_pay, 'Pay for', class: 'control-label col-lg-2' %>
-            <div class="col-lg-5">
-              <%= text_field_tag :total_month_to_pay, '', class: 'form-control' %>
-            </div>
-
-            <div class="col-lg-5">
-              <%= submit_tag 'Pay', :class => 'btn btn-info'  %>
-            </div>
-          </div> 
-        </div>  
-      <% end %>
-    <% end %> 
-    <div class='row'>         
-      <%= render partial: 'payment' %>
-    </div>  
-  </div>
+  </form>>
 </div>
 
 

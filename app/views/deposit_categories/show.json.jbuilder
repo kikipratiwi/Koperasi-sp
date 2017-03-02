@@ -1,0 +1,1 @@
+json.partial! "deposit_categories/deposit_category", deposit_category: @deposit_category

@@ -39,7 +39,7 @@
   <div class="form-group">
     <%= f.label :birthdate, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.date_field :birthdate, :class => 'form-control' %>
+      <%= f.text_field :birthdate, :class => 'datepicker' %>
     </div>
     <%=f.error_span(:birthdate) %>
   </div>
@@ -76,4 +76,10 @@
     </div>
   </div>
 
+<% end %>
+
+<%= javascript_tag do %>
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
 <% end %>

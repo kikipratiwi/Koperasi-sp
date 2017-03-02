@@ -5,7 +5,7 @@ class LoansController < ApplicationController
   # GET /loans
   # GET /loans.json
   def index
-    @loans = Loan.all
+    @loans = @member.loans
   end
 
   # GET /loans/1
@@ -31,6 +31,7 @@ class LoansController < ApplicationController
   # POST /loans
   # POST /loans.json
   def create
+    @url = member_loans_path(params[:member_id])  
     @loan = set_member.loans.new(loan_params)
 
     respond_to do |format|
@@ -48,6 +49,7 @@ class LoansController < ApplicationController
   # PATCH/PUT /loans/1
   # PATCH/PUT /loans/1.json
   def update
+    @url = member_loan_path(params[:member_id], @loan)
     respond_to do |format|
       if @loan.update(loan_params)
         format.html { redirect_to member_loan_path(@member, @loan), notice: 'Loan was successfully updated.' }
@@ -99,8 +101,9 @@ class LoansController < ApplicationController
       if payment_schedules.size != (params[:total_month_to_pay]).to_i
         format.html { redirect_to member_loan_path(@member, @loan), notice: 'Jumlah bulan tidak sesuai' }
       else
-        @loan.update_attributes(paid_off_at: DateTime.now, status: 2) if payment_schedules.map(&:sequence).include?(@loan.payment.payment_schedules.maximum("sequence"))
+
         payment_schedules.update_all(status: 1, updated_at: DateTime.now)
+        @loan.update_attributes(paid_off_at: DateTime.now, status: 2) if @loan.payment.payment_schedules.last.paid_status?
 
         format.html { redirect_to member_loan_path(@member.id, @loan), notice: 'Loan was paid.' }
         format.json { head :no_content }

@@ -4,11 +4,11 @@
 </div>
 
 <dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:jenis_simpanan) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:category) %>:</strong></dt>
   <dd><%= @deposit.deposit_category.name.titleize %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:besar) %>:</strong></dt>
-  <dd><%= @deposit.amount %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:tanggal) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:amount) %>:</strong></dt>
+  <dd><%= to_rp(@deposit.amount) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:saved_at) %>:</strong></dt>
   <dd><%= to_datetime(@deposit.created_at) %></dd> 
   <dt><strong><%= model_class.human_attribute_name(:info) %>:</strong></dt>
   <dd><%= @deposit.info %></dd>

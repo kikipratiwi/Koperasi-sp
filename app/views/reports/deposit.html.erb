@@ -1,0 +1,32 @@
+<%- model_class = Member -%>
+<div class='row'>
+  <div class='col-lg-12'>
+    <div class="page-header">
+      <h1><%= 'Deposit Report'.titleize %></h1>
+    </div>
+    <h5><%= "Reported at : #{to_datetime(DateTime.now)}" %></h1>
+  </div>
+</div>
+<table class="table table-striped" id="data-table">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:category) %></th>
+      <th><%= model_class.human_attribute_name(:amount) %></th>
+      <th><%= model_class.human_attribute_name(:info) %></th>
+      <th><%= model_class.human_attribute_name(:saved_at) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @deposits.each do |deposit| %>
+      <tr>
+        <td><%= deposit.id %></td>
+        <td><%= deposit.deposit_category.name.titleize %></td>
+        <td><%= deposit.amount %></td>
+        <td><%= deposit.info %></td>
+        <td><%= to_datetime(deposit.created_at) %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

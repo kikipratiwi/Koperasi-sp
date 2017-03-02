@@ -2,7 +2,7 @@
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 </div>
-<table class="table table-striped">
+<table class="table table-striped" id="data-table">
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
@@ -17,7 +17,7 @@
       <tr>
         <td><%= link_to saving.id, saving_path(saving) %></td>
         <td><%= saving.saving %></td>
-        <td><%= saving.amount %></td>
+        <td><%= to_rp(saving.amount) %></td>
         <td><%=l saving.created_at %></td>
         <td>
           <%= link_to t('.show', :default => t("helpers.links.show")),
@@ -38,3 +38,9 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_saving_path,
             :class => 'btn btn-primary' %>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+      $('#data-table').DataTable();
+  });
+<% end %>

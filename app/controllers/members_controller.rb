@@ -1,6 +1,7 @@
 class MembersController < ApplicationController
   before_action :authenticate_official!
   before_action :set_member, only: [:pay_principal_savings, :show, :edit, :update, :destroy]
+  before_action :set_principal_amount, only: [:pay_principal_savings, :show, :index]
 
   # GET /members
   # GET /members.json
@@ -63,8 +64,8 @@ class MembersController < ApplicationController
   end
 
   def pay_principal_savings
-    amount =  Saving.principal_saving_amount
-    @deposit = @member.deposits.new(deposit_category_id: 2, amount: amount)
+    category = DepositCategory.find_by_name("pokok")
+    @deposit = @member.deposits.new(deposit_category_id: category.id, amount: @amount)
     respond_to do |format|
       # binding.pry
       if @deposit.save
@@ -80,6 +81,10 @@ class MembersController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_principal_amount
+      @amount =  Saving.principal_saving_amount
+    end
+     
     def set_member
       @member = Member.find(params[:id])
     end

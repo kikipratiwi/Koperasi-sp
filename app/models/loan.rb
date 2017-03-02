@@ -5,6 +5,9 @@ class Loan < ApplicationRecord
   belongs_to :loan_type
   has_one :payment
 
+
+  validates :amount, presence: true
+  
   def set_payment!
 	 payment = self.build_payment
 	 payment.total = 0

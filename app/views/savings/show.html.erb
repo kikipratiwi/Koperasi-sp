@@ -7,7 +7,7 @@
   <dt><strong><%= model_class.human_attribute_name(:saving) %>:</strong></dt>
   <dd><%= @saving.saving %></dd>
   <dt><strong><%= model_class.human_attribute_name(:amount) %>:</strong></dt>
-  <dd><%= @saving.amount %></dd>
+  <dd><%= to_rp(@saving.amount) %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

@@ -2,13 +2,13 @@
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 </div>
-<table class="table table-striped">
+<table class="table table-striped" id="data-table">
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:status) %></th>
-      <th><%= model_class.human_attribute_name(:bergabung) %></th>
+      <th><%= model_class.human_attribute_name(:joined) %></th>
       <th><%=t '.actions', :default => t("helpers.menu") %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -22,13 +22,15 @@
         <td><%= to_datetime(member.created_at) %></td>
         <td>
           <% unless member.active_status? %>
-            <%= link_to t('.edit', :default => t("helpers.links.bayar_simpanan_pokok")),
-                        pay_principal_savings_member_path(member), :class => 'btn btn-default btn-xs',
-                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
+            <%= link_to t('.edit', :default => t("helpers.links.pay_principal_savings")),
+                        pay_principal_savings_member_path(member), :class => 'btn btn-success btn-xs',
+                        :data => { :confirm => "Bayar Simpanan Pokok sebesar #{to_rp(@amount)} ?" } %>
           <% else %>
-            <%= link_to t('.show', :default => t("helpers.links.simpanan")),
+            <%= link_to t('.show', :default => t("helpers.links.card_print")),
+                member_card_path(member, format: :pdf), :class => 'btn btn-default btn-xs'  %>
+            <%= link_to t('.show', :default => t("helpers.links.deposits")),
                         member_deposits_path(member), :class => 'btn btn-default btn-xs' %>
-            <%= link_to t('.show', :default => t("helpers.links.pinjaman")),
+            <%= link_to t('.show', :default => t("helpers.links.loans")),
                         member_loans_path(member), :class => 'btn btn-default btn-xs' %>
           <% end %>
         </td>
@@ -51,3 +53,9 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_member_path,
             :class => 'btn btn-primary' %>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+      $('#data-table').DataTable();
+  });
+<% end %>

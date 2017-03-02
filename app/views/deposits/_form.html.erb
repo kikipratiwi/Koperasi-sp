@@ -18,14 +18,14 @@
   <div class="form-group">
     <%= f.label :deposit_category_id, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :deposit_category_id, @category_collection, {include_blank: "Pilih Kategori Simpanan"}, :class => 'form-control', id: "deposit_category_js"%>
+      <%= f.select :deposit_category_id, @category_collection, {include_blank: "Select Deposit Category"}, :class => 'form-control', id: "deposit_category_js"%>
     </div>
     <%=f.error_span(:deposit_category_id) %>
   </div>
   <div class="form-group">
     <%= f.label :amount, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :amount, :class => 'form-control', id: "amount_js" %>
+      <%= f.text_field :amount, :class => 'form-control', id: "amount_js", value: '' %>
     </div>
     <%=f.error_span(:amount) %>
   </div>
@@ -51,10 +51,10 @@
   $('#deposit_category_js').change(function() {
     if(this.value == "1") {
       $('#amount_js').val("<%= @compulsory_saving_amount %>");      
-      $('#amount_js').prop('disabled', true);
+      $('#amount_js').prop('readonly', true);
     }else{
       $('#amount_js').val('');
-      $('#amount_js').prop('disabled', false);
+      $('#amount_js').prop('readonly', false);
     }
   });
 <% end %>

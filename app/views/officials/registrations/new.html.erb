@@ -15,7 +15,7 @@
 
   <div class="field">
     <%= f.label :birthdate %><br />
-    <%= f.date_select :birthdate %>
+    <%= f.text_field :birthdate, class:'datepicker' %>
   </div>
 
   <div class="field">
@@ -57,3 +57,9 @@
 <% end %>
 
 <%= render "officials/shared/links" %>
+
+<%= javascript_tag do %>
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
+<% end %>

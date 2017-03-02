@@ -1,0 +1,2 @@
+module DepositCategoriesHelper
+end

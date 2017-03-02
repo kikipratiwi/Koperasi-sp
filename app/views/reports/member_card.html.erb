@@ -1,0 +1,22 @@
+<%- model_class = Member -%>
+<div class="page-header">
+  <h1><%= "Kartu Anggota".titleize %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:ID) %>:</strong></dt>
+  <dd><%= member_id_format(@member.created_at, @member.id) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
+  <dd><%= @member.name.titleize %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:address) %>:</strong></dt>
+  <dd><%= @member.address %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:birthplace) %>:</strong></dt>
+  <dd><%= @member.birthplace %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:birthdate) %>:</strong></dt>
+  <dd><%= @member.birthdate.strftime("%d %b %Y") %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:phone_number) %>:</strong></dt>
+  <dd><%= @member.phone_number %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:gender) %>:</strong></dt>
+  <dd><%= @member.gender %></dd>
+  <dt><strong><%= @member.status + " at " +@member.created_at.strftime("%d %b %Y") %></strong></dt>
+</dl>

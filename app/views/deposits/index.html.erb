@@ -1,19 +1,19 @@
 <%- model_class = Deposit -%>
 <div class="page-header">
-  <h1>Simpanan : <%= link_to member_id_format(@member.created_at, @member.id), member_path(@member)  %></h1>
+  <h1>Deposits : <%= link_to member_id_format(@member.created_at, @member.id), member_path(@member)  %></h1>
   <%= 
-    link_to t('.show', :default => t("helpers.links.cetak_laporan")),
+    link_to t('.show', :default => t("helpers.links.report_print")),
               member_deposit_path(@deposits.first.member_id, @deposits.first), :class => 'btn btn-default'
   %> 
 </div>
-<table class="table table-striped">
+<table class="table table-striped" id="data-table">
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:jenis_simpanan) %></th>
-      <th><%= model_class.human_attribute_name(:besar) %></th>
+      <th><%= model_class.human_attribute_name(:deposit_category) %></th>
+      <th><%= model_class.human_attribute_name(:amount) %></th>
       <th><%= model_class.human_attribute_name(:info) %></th>
-      <th><%= model_class.human_attribute_name(:tanggal) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -22,7 +22,7 @@
       <tr>
         <td><%= deposit.id %></td>
         <td><%= deposit.deposit_category.name.titleize %></td>
-        <td><%= deposit.amount %></td>
+        <td><%= to_rp(deposit.amount) %></td>
         <td><%= deposit.info %></td>
         <td><%= to_datetime(deposit.created_at) %></td>
         <td>
@@ -44,3 +44,9 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_member_deposit_path(@member),
             :class => 'btn btn-primary' %>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+      $('#data-table').DataTable();
+  });
+<% end %>

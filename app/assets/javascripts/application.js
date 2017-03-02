@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
+//= require bootstrap-datepicker
+//= require jquery.dataTables.min
+//= require dataTables.bootstrap.min
 //= require turbolinks
 //= require js-routes
-//= require_tree .

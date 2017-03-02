@@ -5,7 +5,7 @@ class DepositsController < ApplicationController
   # GET /deposits
   # GET /deposits.json
   def index
-    @deposits = Deposit.all
+    @deposits = @member.deposits
   end
 
   # GET /deposits/1
@@ -29,11 +29,12 @@ class DepositsController < ApplicationController
   # POST /deposits.json
   def create
     @deposit = set_member.deposits.new(deposit_params)
+    @url = member_deposits_path(params[:member_id])  
 
     respond_to do |format|
       if @deposit.save
         format.html { redirect_to member_deposit_path(@member, @deposit), notice: 'Deposit was successfully created.' }
-        format.json { render :show, status: :created, location: @deposit }
+        format.json { render :show, status: :created, location: member_deposit_path(@member, @deposit) }
       else
         format.html { render :new }
         format.json { render json: @deposit.errors, status: :unprocessable_entity }
@@ -44,10 +45,11 @@ class DepositsController < ApplicationController
   # PATCH/PUT /deposits/1
   # PATCH/PUT /deposits/1.json
   def update
+    @url = member_deposit_path(params[:member_id], @deposit)
     respond_to do |format|
       if @deposit.update(deposit_params)
         format.html { redirect_to member_deposit_path(@member, @deposit), notice: 'Deposit was successfully updated.' }
-        format.json { render :show, status: :ok, location: @deposit }
+        format.json { render :show, status: :ok, location: member_deposit_path(@member, @deposit) }
       else
         format.html { render :edit }
         format.json { render json: @deposit.errors, status: :unprocessable_entity }

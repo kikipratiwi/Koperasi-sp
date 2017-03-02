@@ -11,8 +11,10 @@ Rails.application.routes.draw do
   resources :loan_types
   resources :interests
   resources :savings
+  resources :deposit_categories
 
   resources :members do
+    get 'reports/member_card', as: 'card' 
     member do
       get :pay_principal_savings
     end
@@ -29,6 +31,6 @@ Rails.application.routes.draw do
   end
 
   get 'reports/member', as: 'member_report' 
+  get 'reports/deposit', as: 'deposit_report' 
 
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

@@ -9,36 +9,39 @@
   </head>
 
   <body>
- <%= nav_bar fixed: :left, brand: "Koperasi Nonna", responsive: true do %>
-    <%= menu_group do %>
-        <%= menu_item "Home", root_path %>
-        <%= menu_divider %>
-        <%= drop_down "Konfigurasi" do %>
-            <%= menu_item "Bunga", interests_path %>
-            <%= menu_item "Simpanan", savings_path %>
-            <%= menu_item "Pinjaman", loan_types_path %>
-        <% end %>
-        <%= drop_down "Laporan" do %>
-            <%= menu_item "Anggota", member_report_path(format: :pdf) %>
-            <%= menu_item "Petugas", member_report_path(format: :pdf) %>
-            <%= menu_item "Simpanan", member_report_path(format: :pdf) %>
-            <%= menu_item "Pinjaman", member_report_path(format: :pdf) %>
-        <% end %>        
-        <%= menu_item "Anggota", members_path %>
-    <% end %>
-    <%= menu_group pull: :right do %>
-        <% if current_official %>
-            <%= menu_item "Edit Profile", edit_official_registration_path %>
-            <%= menu_item "Log Out", destroy_official_session_path, method: :delete %>
-        <% else %>
+  <% if current_official %>
+    <%= nav_bar fixed: :left, brand: "Nonna Credit Union", responsive: true do %>
+      <%= menu_group do %>
+          <%= menu_item "Home", root_path %>
+          <%= menu_divider %>
+          <%= drop_down "Config" do %>
+              <%= menu_item "Interest", interests_path %>
+              <%= menu_item "Deposit Category", deposit_categories_path %>
+              <%= menu_item "Saving", savings_path %>
+              <%= menu_item "Loan", loan_types_path %>
+          <% end %>
+          <%= drop_down "Report" do %>
+              <%= menu_item "Member", member_report_path(format: :pdf) %>
+              <%= menu_item "Official", member_report_path(format: :pdf) %>
+              <%= menu_item "Deposit", deposit_report_path(format: :pdf) %>
+              <%= menu_item "Loan", member_report_path(format: :pdf) %>
+          <% end %>        
+          <%= menu_item "Member", members_path %>
+      <% end %>
+      <%= menu_group pull: :right do %>
+          <% if current_official %>
+              <%= menu_item "Edit Profile", edit_official_registration_path %>
+              <%= menu_item "Log Out", destroy_official_session_path, method: :delete %>
+          <% else %>
 
-        <% end %>
-    <% end %>
-<% end %> 
+          <% end %>
+      <% end %>
+    <% end %> 
+  <% end %>
   <div class="container">
     <div class="row">
       <div class="span3">
-    		<%= yield %>
+        <%= yield %>
       </div>
     </div>
   </div>
