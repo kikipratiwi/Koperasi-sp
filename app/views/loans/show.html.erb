@@ -37,12 +37,12 @@
                   :method => 'delete',
                   :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                   :class => 'btn btn-danger' %>
-  </div>
-   <form class="form-horizontal"> 
-    <div class="col-lg-6" id='table_payment_schedules_area'>
-      <div class="page-header">
-        <h2>Payment Schedule</h2>
-      </div>
+</div>
+  <div class="col-lg-6">
+    <div class="page-header">
+      <h2>Payment Schedule</h2>
+    </div>
+    <div class="row">
       <% if @loan.on_going_status? %>
         <%= form_tag payment_member_loan_path(@loan.member_id, @loan) do %>
           <div class='row'>
@@ -58,11 +58,12 @@
           </div>  
         <% end %>
       <% end %> 
-      <div class='row'>         
-        <%= render partial: 'payment' %>
-      </div>  
     </div>
-  </form>>
+    </br>
+    <div class='row'  id='table_payment_schedules_area'>         
+      <%= render partial: 'payment' %>
+    </div>  
+  </div>
 </div>
 
 

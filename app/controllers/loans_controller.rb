@@ -95,8 +95,8 @@ class LoansController < ApplicationController
   def payment
     # payment_schedule = @loan.payment.payment_schedules.find(params[:payment_schedule_id])
     # payment_schedule.update_attribute(:status, 1)
+    # binding.pry
     payment_schedules = @loan.payment.payment_schedules.where(status: 0).limit(params[:total_month_to_pay])
-  # binding.pry
     respond_to do |format|
       if payment_schedules.size != (params[:total_month_to_pay]).to_i
         format.html { redirect_to member_loan_path(@member, @loan), notice: 'Jumlah bulan tidak sesuai' }
